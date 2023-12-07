@@ -19,7 +19,10 @@ export const Form = ({ tranformUrlToCode }: { tranformUrlToCode: (url: string) =
 		>
 			<Label htmlFor="url">Image URL</Label>
 			<Input name="url" id="url" type="url" placeholder="https:://your-screenshoot/image.png"></Input>
-			<Button>Generate image code</Button>
+			<span></span>
+			<div className="flex justify-center ">
+				<Button className="max-w-min">Generate image code</Button>
+			</div>
 		</form>
 	)
 }
