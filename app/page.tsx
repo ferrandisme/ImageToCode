@@ -29,11 +29,20 @@ export default function Home() {
 	const [result, setResult] = useState('')
 	const [step, setStep] = useState(STEPS.INITIAL)
 
-	const tranformUrlToCode = async (url: string) => {
+	const toBase64 = (file: File) => {
+		return new Promise<string>((resolve, reject) => {
+			const reader = new FileReader()
+			reader.readAsDataURL(file)
+			reader.onload = () => resolve(reader.result as string)
+			reader.onerror = (error) => reject(error)
+		})
+	}
+
+	const transformToCode = async (body: string) => {
 		setStep(STEPS.LOADING)
 		const res = await fetch('/api/generate-code-from-image', {
 			method: 'POST',
-			body: JSON.stringify({ url }),
+			body,
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -50,6 +59,15 @@ export default function Home() {
 		for await (const chunk of streamReader(res)) {
 			setResult((actual) => actual + chunk)
 		}
+	}
+
+	const tranformUrlToCode = async (url: string) => {
+		transformToCode(JSON.stringify({ url }))
+	}
+
+	const tranformImageToCode = async (file: File) => {
+		const img = await toBase64(file)
+		transformToCode(JSON.stringify({ img }))
 	}
 
 	return (
@@ -87,7 +105,7 @@ export default function Home() {
 						)}
 						{step === STEPS.INITIAL && (
 							<div className="flex flex-col gap-4">
-								<DragAndDrop />
+								<DragAndDrop tranformImageToCode={tranformImageToCode} />
 								<Form tranformUrlToCode={tranformUrlToCode} />
 							</div>
 						)}

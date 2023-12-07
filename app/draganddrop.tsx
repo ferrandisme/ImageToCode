@@ -1,9 +1,15 @@
 'use client'
 
 import { Dropzone, ExtFile } from '@files-ui/react'
+import { error } from 'console'
 
-export const DragAndDrop = () => {
-	const updateFiles = (files: ExtFile[]) => {}
+export const DragAndDrop = ({ tranformImageToCode }: { tranformImageToCode: (file: File) => Promise<void> }) => {
+	const updateFiles = (files: ExtFile[]) => {
+		const file = files[0].file
+		if (file) {
+			tranformImageToCode(file)
+		}
+	}
 
 	return (
 		<Dropzone
