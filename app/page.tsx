@@ -10,6 +10,20 @@ const STEPS = {
 	ERROR: 'ERROR',
 }
 
+async function* streamReader(res: Response) {
+	const reader = res.body?.getReader()
+	const decoder = new TextDecoder()
+
+	if (!reader) return
+
+	while (true) {
+		const { done, value } = await reader.read()
+		const chunk = decoder.decode(value)
+		yield chunk
+		if (done) break
+	}
+}
+
 export default function Home() {
 	const [result, setResult] = useState('')
 	const [step, setStep] = useState(STEPS.INITIAL)
@@ -32,14 +46,8 @@ export default function Home() {
 		setStep(STEPS.PREVIEW)
 		// read data streaming
 
-		const reader = res.body.getReader()
-		const decoder = new TextDecoder()
-
-		while (true) {
-			const { done, value } = await reader.read()
-			const chunk = decoder.decode(value)
+		for await (const chunk of streamReader(res)) {
 			setResult((actual) => actual + chunk)
-			if (done) break
 		}
 	}
 
