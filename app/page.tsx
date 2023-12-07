@@ -1,8 +1,10 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { DragAndDrop } from './draganddrop'
 import { Form } from './form'
 import { useState } from 'react'
+import Link from 'next/link'
 
 const STEPS = {
 	INITIAL: 'INITIAL',
@@ -70,6 +72,10 @@ export default function Home() {
 		transformToCode(JSON.stringify({ img }))
 	}
 
+	const copyCode = () => {
+		navigator.clipboard.writeText(result)
+	}
+
 	return (
 		<div>
 			<div className="heigh-screen">
@@ -77,8 +83,8 @@ export default function Home() {
 					<header className="text-center">
 						<h1 className="text-3xl font-semibold">Image2Code</h1>
 						<h2 className="text-sm opacity-75">From an Image to Code using OpenAI GPT last tech</h2>
+						<section> {/*TODO Filters*/}</section>
 					</header>
-					<section> {/*Filters placeholder*/}</section>
 				</aside>
 				<main className="">
 					<section className="max-w-5xl mx-auto p-10">
@@ -115,6 +121,7 @@ export default function Home() {
 									srcDoc={result}
 									className="w-full h-full hiframe border-2 rounded border-gray-700 aspect-video"
 								/>
+								<Button onClick={copyCode}>Copy code</Button>
 								<pre>
 									<code>{result}</code>
 								</pre>
