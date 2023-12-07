@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-export const Form = () => {
+export const Form = ({ tranformUrlToCode }: { tranformUrlToCode: (url: string) => void }) => {
 	return (
 		<form
 			className="flex flex-col gap-4"
@@ -14,7 +14,7 @@ export const Form = () => {
 				const form = evt.currentTarget as HTMLFormElement
 				const url = form.elements.namedItem('url') as HTMLInputElement
 
-				console.log(url.value)
+				tranformUrlToCode(url.value)
 			}}
 		>
 			<Label htmlFor="url">Image URL</Label>
