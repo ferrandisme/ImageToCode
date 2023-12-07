@@ -78,3 +78,7 @@
 .heigh-screen {
   min-height: 97vh;
 }
+
+.hiframe {
+  min-height: 70vh;
+}

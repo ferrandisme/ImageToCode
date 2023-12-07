@@ -110,8 +110,11 @@ export default function Home() {
 							</div>
 						)}
 						{step === STEPS.PREVIEW && (
-							<div className="rounded  flex flex-col gap-4">
-								<iframe srcDoc={result} className="w-full h-full border-2 rounded border-gray-700 aspect-video" />
+							<div className="rounded  h-fullflex flex-col gap-4">
+								<iframe
+									srcDoc={result}
+									className="w-full h-full hiframe border-2 rounded border-gray-700 aspect-video"
+								/>
 								<pre>
 									<code>{result}</code>
 								</pre>

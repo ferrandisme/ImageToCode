@@ -6,8 +6,6 @@ const USER_PROMPT = 'Generate code for a webpage that looks exactly like this'
 const TAILWIND_PROMPT = `You are an expert Tailwind developer
 You take screenshots of a reference web page from the user, and then build single page apps 
 using Tailwind, HTML and JS.
-You might also be given a screenshot(The second image) of a web page that you have already built, and asked to
-update it to look more like the reference image(The first image).
 
 - Make sure the app looks exactly like the screenshot.
 - Pay close attention to background color, text color, font size, font family, 
@@ -34,7 +32,9 @@ const openai = new OpenAI({
 export const runtime = 'edge'
 
 export async function POST(req: Request) {
-	const { url } = await req.json()
+	const { url, img } = await req.json()
+
+	const imageUrl = url ?? img
 
 	const response = await openai.chat.completions.create({
 		model: 'gpt-4-vision-preview',
@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 				role: 'user',
 				content: [
 					{ type: 'text', text: USER_PROMPT },
-					{ type: 'image_url', image_url: url },
+					{ type: 'image_url', image_url: imageUrl },
 				],
 			},
 		],
