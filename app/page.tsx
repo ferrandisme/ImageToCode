@@ -5,6 +5,8 @@ import { DragAndDrop } from './draganddrop'
 import { Form } from './form'
 import { useState } from 'react'
 import Link from 'next/link'
+import { Input } from '@/components/ui/input'
+import { FormApiKey } from './formApiKey'
 
 const STEPS = {
 	INITIAL: 'INITIAL',
@@ -28,6 +30,7 @@ async function* streamReader(res: Response) {
 }
 
 export default function Home() {
+	const [apiKey, setApiKey] = useState('')
 	const [result, setResult] = useState('')
 	const [step, setStep] = useState(STEPS.INITIAL)
 
@@ -64,12 +67,12 @@ export default function Home() {
 	}
 
 	const tranformUrlToCode = async (url: string) => {
-		transformToCode(JSON.stringify({ url }))
+		transformToCode(JSON.stringify({ url, apiKey }))
 	}
 
 	const tranformImageToCode = async (file: File) => {
 		const img = await toBase64(file)
-		transformToCode(JSON.stringify({ img }))
+		transformToCode(JSON.stringify({ img, apiKey }))
 	}
 
 	const copyCode = () => {
@@ -111,8 +114,14 @@ export default function Home() {
 						)}
 						{step === STEPS.INITIAL && (
 							<div className="flex flex-col gap-4">
-								<DragAndDrop tranformImageToCode={tranformImageToCode} />
-								<Form tranformUrlToCode={tranformUrlToCode} />
+								{(!apiKey || apiKey.length < 10) && <FormApiKey updateKey={setApiKey} />}
+								{apiKey && apiKey.length >= 10 && (
+									<>
+										<p>Drag and drop and image or paste an url</p>
+										<DragAndDrop tranformImageToCode={tranformImageToCode} />
+										<Form tranformUrlToCode={tranformUrlToCode} />
+									</>
+								)}
 							</div>
 						)}
 						{step === STEPS.PREVIEW && (

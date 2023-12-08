@@ -24,17 +24,21 @@ In terms of libraries,
 Return only the full code in <html></html> tags.
 Do not include markdown "\`\`\`" or "\`\`\`html" at the start or end.`
 
-const openai = new OpenAI({
-	apiKey: process.env.OPENAI_API_KEY,
-})
-
 // Cloud option is more cheap and long. Edge is faster
 export const runtime = 'edge'
 
 export async function POST(req: Request) {
-	const { url, img } = await req.json()
+	const { url, img, apiKey } = await req.json()
 
 	const imageUrl = url ?? img
+
+	if (!apiKey || !imageUrl) {
+		throw new Error('Invalid image or key')
+	}
+
+	const openai = new OpenAI({
+		apiKey: apiKey,
+	})
 
 	const response = await openai.chat.completions.create({
 		model: 'gpt-4-vision-preview',
@@ -54,4 +58,5 @@ export async function POST(req: Request) {
 
 	const stream = OpenAIStream(response)
 	return new StreamingTextResponse(stream)
+	return undefined
 }
