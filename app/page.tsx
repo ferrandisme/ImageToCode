@@ -79,6 +79,10 @@ export default function Home() {
 
 	return (
 		<div>
+			<h2 className="bg-red-500 text-center">
+				<b>DISCLAIMER: This is a product in development. No ready for production</b>
+			</h2>
+			<h4 className="bg-red-500 text-center">Limit your API Key and use a prepaid account to avoid issues</h4>
 			<div className="heigh-screen">
 				<aside className="flex flex-col justify-between p-4 bg-blue-800">
 					<header className="text-center">
