@@ -4,8 +4,6 @@ import { Button } from '@/components/ui/button'
 import { DragAndDrop } from './draganddrop'
 import { Form } from './form'
 import { useState } from 'react'
-import Link from 'next/link'
-import { Input } from '@/components/ui/input'
 import { FormApiKey } from './formApiKey'
 
 const STEPS = {
@@ -85,7 +83,7 @@ export default function Home() {
 				<aside className="flex flex-col justify-between p-4 bg-blue-800">
 					<header className="text-center">
 						<h1 className="text-3xl font-semibold">Image2Code</h1>
-						<h2 className="text-sm opacity-75">From an Image to Code using OpenAI GPT last tech</h2>
+						<h2 className="text-sm opacity-75">From an Image to Code using OpenAI GPT Vision</h2>
 						<section> {/*TODO Filters*/}</section>
 					</header>
 				</aside>
